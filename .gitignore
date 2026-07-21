@@ -9,3 +9,9 @@ tsconfig.tsbuildinfo
 private/
 .replit
 replit.nix
+#必须添加到 .gitignore的忽略文件，存放 API Keys、Database URL、Tokens 最常见的地方
+.env
+.env.local
+.env.*.local
+.npmrc
+*.tsbuildinfo
