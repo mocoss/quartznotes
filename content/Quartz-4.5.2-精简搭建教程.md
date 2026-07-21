@@ -103,6 +103,17 @@ npx quartz build --serve
 ### 4. 不要手动创建 .quartz
 `.quartz` 是缓存目录，由 `npx quartz create` 自动生成，手动创建会报错。
 
+### 5. git clone仓库后切回自己仓库地址再上传
+```bash
+git remote set-url origin https://github.com/你的用户名/quartz.git
+```
+
+### 6. 重点注意仓库分支是main还是master
+
+```bash
+git branch -M main    #如果你是master，请修改为 git branch -M main 
+git push -u origin main   #如果你是master，请修改为git push -u origin main
+```
 ---
 
 ## 🔧 常用配置
@@ -133,9 +144,10 @@ ignorePatterns: [".obsidian", ".trash", "*.draft.md"]
 git init
 git add .
 git commit -m "Initial commit"
+git remote set-url origin https://github.com/你的用户名/quartz.git
 git remote add origin https://github.com/用户名/仓库名.git
-git branch -M main
-git push -u origin main
+git branch -M main    #如果你是master，请修改为 git branch -M main 
+git push -u origin main   #如果你是master，请修改为git push -u origin main
 ```
 
 ### 3. 配置自动部署
@@ -144,7 +156,7 @@ git push -u origin main
 name: Deploy Quartz site to GitHub Pages
 on:
   push:
-    branches: [main]
+    branches: [main]    # 如果你的主分支叫 master，请改为 master
 permissions:
   contents: read
   pages: write
@@ -198,7 +210,7 @@ jobs:
 仓库 Settings → Pages → Custom domain 填写域名 → 保存
 
 ### 重要：CNAME 文件
-GitHub 会自动生成 `CNAME` 文件，**必须提交到 main 分支**，否则每次部署会丢失域名。
+GitHub 会自动生成 `CNAME` 文件，**必须提交到 main 或者 maser 分支**，根据第一次提交相同，否则每次部署会丢失域名。
 
 ### 开启 HTTPS
 等待 DNS 生效后（10分钟~24小时），勾选 **Enforce HTTPS**。
@@ -227,31 +239,43 @@ npx quartz build --serve
 ## ❓ 常见问题
 
 ### Q1: 构建报错 fetch failed
-**原因**：CustomOgImages 插件请求外网失败
+**原因**：CustomOgImages 插件请求外网失败  
 **解决**：`quartz.config.ts` 中注释 `Plugin.CustomOgImages()`
 
 ### Q2: npm error Unsupported engine
-**原因**：Node 版本太低
+**原因**：Node 版本太低  
 **解决**：升级 Node.js 到 v22+
 
 ### Q3: 页面样式错乱、图片 404
-**原因**：baseUrl 配置错误
+**原因**：baseUrl 配置错误  
 **解决**：检查 baseUrl 是否与实际访问地址一致
 
 ### Q4: 域名访问 404
-**原因**：CNAME 文件未提交
+**原因**：CNAME 文件未提交  
 **解决**：确认仓库根目录有 CNAME 文件且内容正确
 
 ### Q5: Enforce HTTPS 灰色不可点
-**原因**：DNS 未生效或证书未签发
+**原因**：DNS 未生效或证书未签发  
 **解决**：等待 1 小时后重试
 
 ### Q6: 复制项目后构建失败
-**原因**：.quartz 缓存或 node_modules 不兼容
+**原因**：.quartz 缓存或 node_modules 不兼容  
 **解决**：删除 .quartz 和 node_modules，重新 npm install
 
 ### Q7: 修改文件夹名有影响吗？
 **答**：不影响 Git 和部署，只影响本地路径。改名后重新在 Obsidian/编辑器中打开即可。
+
+
+### Q8: git push时报如下错误：
+	$ git push -u origin master
+	error: src refspec master does not match any
+	error: failed to push some refs to 'https://github.com/jackyzha0/quartz.git'
+
+**原因**：当前还在jackyzha0的仓库地址  
+**解决**：切回自己的仓库地址再执行推送
+```bash
+git remote set-url origin https://github.com/你的用户名/quartz.git
+```
 
 ---
 
@@ -268,7 +292,7 @@ npx quartz build --serve
 7. `npx quartz build --serve` 本地测试
 8. GitHub 新建空仓库
 9. `git init` → `git add .` → `git commit -m "Initial"`
-10. `git remote add origin 仓库地址` → `git branch -M main` → `git push -u origin main`
+10. `git remote add origin 仓库地址` → `git branch -M main 或master` → `git push -u origin main 或 master`
 11. 配置 Pages 和 Actions
 
 ---
